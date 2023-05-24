@@ -1,0 +1,21 @@
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore virtual environment directories (if you're using virtualenv or venv)
+venv/
+env/
+
+# Ignore user-specific or OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE or editor specific files
+.vscode/
+.idea/
+
+# Ignore dependencies and packages (add more if needed)
+node_modules/
+dist/
+build/
+flagged/
