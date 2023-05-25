@@ -1,3 +1,4 @@
+import os
 import datetime
 import subprocess
 import contextlib
@@ -23,7 +24,7 @@ def transcribe(audio, num_speakers):
     return "Audio duration too long"
 
   model = whisper.load_model("large-v2")
-  result = model.transcribe(path)
+  result = model.transcribe(path, language="pt")
   segments = result["segments"]
 
   num_speakers = min(max(round(num_speakers), 1), len(segments))
@@ -33,11 +34,18 @@ def transcribe(audio, num_speakers):
     embeddings = make_embeddings(path, segments, duration)
     add_speaker_labels(segments, embeddings, num_speakers)
   output = get_output(segments)
+  # Write output to file
+  now = datetime.datetime.now()
+  filename = f"{audio.split('.')[0]} (Transcribed on {now.strftime('%Y-%m-%d %H-%M-%S')}).txt"
+  with open(filename, 'w') as f:
+      f.write(output)
+
+  # Delete the converted audio file
+  os.remove(path)
   return output
 
 def convert_to_wav(path):
   audio = af.channels(path)
-  print(audio)
   isMono = audio == 1
   if path[-3:] != 'wav' or not isMono:
     new_path = '.'.join(path.split('.')[:-1]) + '01.wav'
