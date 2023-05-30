@@ -14,7 +14,7 @@ from pyannote.audio import Audio
 from pyannote.core import Segment
 from pyannote.audio.pipelines.speaker_verification import PretrainedSpeakerEmbedding
 
-def transcribe(audio, num_speakers):
+def transcribe_audio(audio, num_speakers, dest_language):
   path, error = convert_to_wav(audio)
   if error is not None:
     return error
@@ -24,7 +24,7 @@ def transcribe(audio, num_speakers):
     return "Audio duration too long"
 
   model = whisper.load_model("large-v2")
-  result = model.transcribe(path, language="pt")
+  result = model.transcribe(path, language = dest_language)
   segments = result["segments"]
 
   num_speakers = min(max(round(num_speakers), 1), len(segments))

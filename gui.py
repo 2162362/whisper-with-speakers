@@ -4,7 +4,7 @@ from tkinter import filedialog
 from PIL import ImageTk, Image
 import re
 import gradio as gr
-from transcription import transcribe
+from transcription import transcribe_audio
 
 # Function to open file dialog
 def open_file_dialog():
@@ -15,7 +15,13 @@ def open_file_dialog():
 def gui_transcribe():
     audio = file_path
     num_speakers = float(num_speakers_entry.get())
-    transcript = transcribe(audio, num_speakers)
+    
+    # Get the selected language
+    language = selected_language.get()
+
+    print(language)
+    
+    transcript = transcribe_audio(audio, num_speakers, language)
     print(transcript)
 
 def run_gui():
@@ -26,6 +32,22 @@ def run_gui():
     # Create an Audio File Input Button
     audio_input_button = tk.Button(window, text="Upload Audio", command=open_file_dialog)
     audio_input_button.pack(pady=10)
+    
+    # Add the select box with language options
+    language_label = tk.Label(window, text="Select Language:")
+    language_label.pack()
+
+    language_options = {
+        "English": "en",
+        "Portugues": "pt"
+    }
+
+    # Create the selected_language variable
+    global selected_language
+    selected_language = tk.StringVar(value="en")  # Default selected language is English
+
+    language_select = tk.OptionMenu(window, tk.StringVar(value="English"), selected_language, *language_options.keys())
+    language_select.pack()
 
     # Create a Number of Speakers Input Entry
     num_speakers_label = tk.Label(window, text="Number of Speakers:")
