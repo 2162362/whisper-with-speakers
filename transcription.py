@@ -37,7 +37,7 @@ def transcribe_audio(audio, num_speakers, dest_language):
   # Write output to file
   now = datetime.datetime.now()
   filename = f"{audio.split('.')[0]} (Transcribed on {now.strftime('%Y-%m-%d %H-%M-%S')}).txt"
-  with open(filename, 'w') as f:
+  with open(filename, 'w', encoding='utf-8') as f:
       f.write(output)
 
   # Delete the converted audio file
